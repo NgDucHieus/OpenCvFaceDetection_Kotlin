@@ -1,5 +1,5 @@
 {
-  "installationFolder": "D:\\Projects\\Github\\OpenCVFaceDetection\\sdk\\build\\intermediates\\prefab_package\\release\\prefab",
+  "installationFolder": "C:\\Users\\MAY02\\StudioProjects\\OpenCvFaceDetection_Kotlin\\sdk\\build\\intermediates\\prefab_package\\release\\prefab",
   "gradlePath": ":openCV",
   "packageInfo": {
     "packageName": "openCV",
@@ -8,7 +8,7 @@
     "modules": [
       {
         "moduleName": "opencv_jni_shared",
-        "moduleHeaders": "D:\\Projects\\Github\\OpenCVFaceDetection\\sdk\\native\\jni\\include",
+        "moduleHeaders": "C:\\Users\\MAY02\\StudioProjects\\OpenCvFaceDetection_Kotlin\\sdk\\native\\jni\\include",
         "moduleExportLibraries": [],
         "abis": []
       }
