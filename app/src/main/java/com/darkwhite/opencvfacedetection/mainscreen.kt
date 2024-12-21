@@ -8,6 +8,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,6 +16,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -27,12 +29,21 @@ import androidx.navigation.compose.composable
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Slider
+import androidx.compose.material3.Text
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
 
@@ -153,7 +164,7 @@ fun rotateBitmap(bitmap: Bitmap, degrees: Float): Bitmap {
         true
     )
 }
-
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RotateImage(originalBitmap: Bitmap) {
     var rotationAngle by remember { mutableStateOf(0f) } // Rotation angle
@@ -177,18 +188,34 @@ fun RotateImage(originalBitmap: Bitmap) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
+        Row {
+
+
+
         // Slider to adjust rotation angle
-        Slider(
+            Slider(
             value = rotationAngle,
             onValueChange = { rotationAngle = it },
             valueRange = 0f..360f, // Allow rotation from 0 to 360 degrees
             modifier = Modifier.padding(horizontal = 16.dp)
-        )
+                                .weight(1f)
+            )
+            Spacer(modifier = Modifier.width(16.dp))
+
+            IconButton(
+                onClick = { rotationAngle = (rotationAngle +90f) % 360f } // Increment rotation by 90 degrees
+
+            ) {
+                Icon(
+                    contentDescription = "",
+                    painter = painterResource(R.drawable.rotateright)
+                )
+            }
+        }
+
     }
 }
-
-
-@Preview
+@Preview (showBackground = true)
 @Composable
 fun Prei()
 {

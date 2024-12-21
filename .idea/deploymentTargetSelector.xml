@@ -11,13 +11,13 @@
       <SelectionState runConfigName="PreviewDisplayDrawableImageWithGrayscaleToggle">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="PreviewDisplayImageWithToggle">
-        <option name="selectionMode" value="DROPDOWN" />
-      </SelectionState>
       <SelectionState runConfigName="PreviewImageDetailsScreen">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
       <SelectionState runConfigName="PreviewGalleryNavHost">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="Prei">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>
