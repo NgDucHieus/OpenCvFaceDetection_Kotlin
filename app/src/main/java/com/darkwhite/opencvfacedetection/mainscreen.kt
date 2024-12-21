@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -39,6 +40,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -200,7 +202,7 @@ fun RotateImage(originalBitmap: Bitmap) {
             modifier = Modifier.padding(horizontal = 16.dp)
                                 .weight(1f)
             )
-            Spacer(modifier = Modifier.width(16.dp))
+//            Spacer(modifier = Modifier.width(5.dp))
 
             IconButton(
                 onClick = { rotationAngle = (rotationAngle +90f) % 360f } // Increment rotation by 90 degrees
@@ -208,7 +210,7 @@ fun RotateImage(originalBitmap: Bitmap) {
             ) {
                 Icon(
                     contentDescription = "",
-                    painter = painterResource(R.drawable.rotateright)
+                    painter = painterResource(R.drawable.r)
                 )
             }
         }
@@ -222,4 +224,108 @@ fun Prei()
     val context = LocalContext.current
     val bitmap = BitmapFactory.decodeResource(context.resources, R.drawable.test) // Replace with your drawable
     RotateImage(originalBitmap = bitmap)
+}
+
+
+fun flipBitmap(bitmap: Bitmap, horizontal: Boolean): Bitmap {
+    val matrix = Matrix().apply {
+        if (horizontal) {
+            preScale(-1f, 1f) // Flip horizontally
+        } else {
+            preScale(1f, -1f) // Flip vertically
+        }
+    }
+    return Bitmap.createBitmap(
+        bitmap,
+        0,
+        0,
+        bitmap.width,
+        bitmap.height,
+        matrix,
+        true
+    )
+}
+@Composable
+fun RotateAndFlipImage(originalBitmap: Bitmap) {
+    var rotationAngle by remember { mutableStateOf(0f) } // Rotation angle
+    var flippedHorizontally by remember { mutableStateOf(false) } // Horizontal flip state
+    var flippedVertically by remember { mutableStateOf(false) } // Vertical flip state
+
+    // Create a transformed bitmap
+    val transformedBitmap = remember(rotationAngle, flippedHorizontally, flippedVertically) {
+        var bitmap = originalBitmap
+        if (flippedHorizontally) bitmap = flipBitmap(bitmap, horizontal = true)
+        if (flippedVertically) bitmap = flipBitmap(bitmap, horizontal = false)
+        rotateBitmap(bitmap, rotationAngle)
+    }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(color = Color.Black)
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        // Display the transformed image
+        Image(
+            bitmap = transformedBitmap.asImageBitmap(),
+            contentDescription = "Transformed Image",
+            modifier = Modifier.size(300.dp)
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Row to position Slider and Buttons horizontally
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween // Space buttons and slider evenly
+        ) {
+            // Flip Horizontally Button (IconButton)
+            IconButton(
+                onClick = { flippedHorizontally = !flippedHorizontally } // Toggle horizontal flip
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.f66), // Replace with your horizontal flip icon
+                    contentDescription = "Flip Horizontally Icon",
+                    modifier = Modifier.size(32.dp),
+                    tint = Color.Unspecified // Use the intrinsic color of the drawable
+                )
+            }
+
+            // Slider to adjust rotation angle
+            Slider(
+                value = rotationAngle,
+                onValueChange = { rotationAngle = it },
+                valueRange = 0f..360f, // Allow rotation from 0 to 360 degrees
+                modifier = Modifier.weight(1f) // Let the slider take the available space
+            )
+
+            // Rotate Button (IconButton)
+            IconButton(
+                onClick = { rotationAngle = (rotationAngle + 90f) % 360f }, // Increment rotation by 90 degrees
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.rotate_100), // Replace with your rotate icon
+                    contentDescription = "Rotate Icon",
+                    modifier = Modifier.size(32.dp),
+                    tint = Color.Unspecified // Use the intrinsic color of the drawable
+                )
+            }
+        }
+    }
+}
+
+
+@Preview (showBackground = true)
+@Composable
+fun final()
+{
+    val context = LocalContext.current
+    val bitmap = BitmapFactory.decodeResource(context.resources, R.drawable.test)
+    RotateAndFlipImage(bitmap)
+
 }
