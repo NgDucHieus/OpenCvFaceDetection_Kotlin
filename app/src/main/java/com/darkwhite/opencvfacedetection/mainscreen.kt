@@ -7,10 +7,14 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -24,6 +28,10 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.Slider
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
@@ -146,3 +154,45 @@ fun rotateBitmap(bitmap: Bitmap, degrees: Float): Bitmap {
     )
 }
 
+@Composable
+fun RotateImage(originalBitmap: Bitmap) {
+    var rotationAngle by remember { mutableStateOf(0f) } // Rotation angle
+
+    // Create a rotated bitmap
+    val rotatedBitmap = remember(rotationAngle) {
+        rotateBitmap(originalBitmap, rotationAngle)
+    }
+
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        // Display the rotated image
+        Image(
+            bitmap = rotatedBitmap.asImageBitmap(),
+            contentDescription = "Rotated Image",
+            modifier = Modifier.size(300.dp)
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Slider to adjust rotation angle
+        Slider(
+            value = rotationAngle,
+            onValueChange = { rotationAngle = it },
+            valueRange = 0f..360f, // Allow rotation from 0 to 360 degrees
+            modifier = Modifier.padding(horizontal = 16.dp)
+        )
+    }
+}
+
+
+@Preview
+@Composable
+fun Prei()
+{
+    val context = LocalContext.current
+    val bitmap = BitmapFactory.decodeResource(context.resources, R.drawable.test) // Replace with your drawable
+    RotateImage(originalBitmap = bitmap)
+}
