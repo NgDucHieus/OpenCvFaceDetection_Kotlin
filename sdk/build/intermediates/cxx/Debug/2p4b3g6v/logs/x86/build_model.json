@@ -143,7 +143,7 @@
         "rootBuildGradleFolder": "C:\\Users\\MAY02\\StudioProjects\\OpenCvFaceDetection_Kotlin",
         "sdkFolder": "C:\\Users\\MAY02\\AppData\\Local\\Android\\Sdk",
         "isBuildOnlyTargetAbiEnabled": true,
-        "ideBuildTargetAbi": "x86,armeabi-v7a,armeabi",
+        "ideBuildTargetAbi": "x86",
         "isCmakeBuildCohabitationEnabled": false,
         "isPrefabEnabled": false
       },

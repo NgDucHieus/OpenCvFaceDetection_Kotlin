@@ -271,7 +271,7 @@ fun RotateAndFlipImage(originalBitmap: Bitmap) {
         Image(
             bitmap = transformedBitmap.asImageBitmap(),
             contentDescription = "Transformed Image",
-            modifier = Modifier.size(400.dp)
+            modifier = Modifier.size(300.dp)
         )
 
         Spacer(modifier = Modifier.height(16.dp))
