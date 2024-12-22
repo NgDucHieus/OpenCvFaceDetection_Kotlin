@@ -72,5 +72,6 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation(platform(libs.androidx.compose.bom.v20241201))
     implementation(libs.coil.compose)
+    implementation(libs.imagecropview)
 
 }

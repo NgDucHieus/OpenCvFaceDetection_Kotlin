@@ -2,6 +2,7 @@
 agp = "8.3.0"
 coilCompose = "2.6.0"
 composeBomVersion = "2024.12.01"
+imagecropview = "3.0.1"
 kotlin = "1.9.0"
 coreKtx = "1.12.0"
 junit = "4.13.2"
@@ -17,6 +18,7 @@ navigationCompose = "2.8.5"
 androidx-compose-bom-v20241201 = { module = "androidx.compose:compose-bom", version.ref = "composeBomVersion" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
+imagecropview = { module = "io.github.rroohit:ImageCropView", version.ref = "imagecropview" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }

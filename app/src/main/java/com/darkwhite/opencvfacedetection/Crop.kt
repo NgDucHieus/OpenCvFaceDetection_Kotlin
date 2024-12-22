@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -53,86 +54,57 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
-
-
-
-fun cropBitmap(bitmap: Bitmap, x: Int, y: Int, width: Int, height: Int): Bitmap {
-    val cropWidth = width.coerceAtMost(bitmap.width - x)
-    val cropHeight = height.coerceAtMost(bitmap.height - y)
-    return Bitmap.createBitmap(bitmap, x, y, cropWidth, cropHeight)
-}
+import com.image.cropview.CropType
+import com.image.cropview.EdgeType
+import com.image.cropview.ImageCrop
 
 @Composable
-fun InteractiveCroppingTool(originalBitmap: Bitmap) {
-    // Define initial crop rectangle
-    var cropStartX by remember { mutableStateOf(100f) } // Top-left X
-    var cropStartY by remember { mutableStateOf(100f) } // Top-left Y
-    var cropWidth by remember { mutableStateOf(300f) } // Rectangle width
-    var cropHeight by remember { mutableStateOf(200f) } // Rectangle height
+fun ImageCropper(bitmap: Bitmap) {
+    // Initialize the ImageCrop class
+    val imageCrop = remember { ImageCrop(bitmap) }
 
-    val croppedBitmap = remember(cropStartX, cropStartY, cropWidth, cropHeight) {
-        cropBitmap(
-            originalBitmap,
-            cropStartX.toInt(),
-            cropStartY.toInt(),
-            cropWidth.toInt(),
-            cropHeight.toInt()
-        )
-    }
+    // Calculate aspect ratio for proportional scaling
+    val aspectRatio = bitmap.width.toFloat() / bitmap.height
 
-    Box(
+    Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        // Display the original image
-        Image(
-            bitmap = originalBitmap.asImageBitmap(),
-            contentDescription = "Original Image",
-            modifier = Modifier.fillMaxSize()
-        )
-
-        // Cropping overlay
         Box(
             modifier = Modifier
-                .fillMaxSize()
-                .pointerInput(Unit) {
-                    detectDragGestures(
-                        onDrag = { change, dragAmount ->
-                            change.consume() // Consume the gesture
-                            cropStartX += dragAmount.x
-                            cropStartY += dragAmount.y
-                        }
-                    )
-                }
+                .fillMaxWidth() // Fill the width of the screen
+                .aspectRatio(aspectRatio) // Maintain the image's aspect ratio
+                .background(Color.Gray) // Optional: Add a background color
         ) {
-            Canvas(
-                modifier = Modifier.fillMaxSize()
-            ) {
-                drawRect(
-                    color = Color.Black.copy(alpha = 0.5f), // Dim the background
-                    size = size
-                )
-                drawRect(
-                    color = Color.White, // Highlight the cropping area
-                    topLeft = Offset(cropStartX, cropStartY),
-                    size = androidx.compose.ui.geometry.Size(cropWidth, cropHeight),
-                    style = androidx.compose.ui.graphics.drawscope.Stroke(width = 2f)
-                )
-            }
-        }
-
-        // Display cropped bitmap
-        Box(
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .padding(16.dp)
-        ) {
-            Image(
-                bitmap = croppedBitmap.asImageBitmap(),
-                contentDescription = "Cropped Image",
-                modifier = Modifier.size(150.dp) // Preview the cropped image
+            // Display the cropping tool
+            imageCrop.ImageCropView(
+                modifier = Modifier.fillMaxSize(), // Scale the image to fit within the aspect ratio
+                guideLineColor = Color.LightGray,
+                guideLineWidth = 2.dp,
+                edgeCircleSize = 8.dp,
+                showGuideLines = true,
+                cropType = CropType.FREE_STYLE,
+                edgeType = EdgeType.CIRCULAR
             )
         }
+
+        Button(
+            onClick = {
+                val croppedBitmap = imageCrop.onCrop()
+                // Handle the cropped bitmap (e.g., save or display it)
+            },
+            modifier = Modifier.padding(16.dp)
+        ) {
+            Text("Crop")
+        }
     }
+}
+
+@Preview
+@Composable
+fun MainContent() {
+    val context = LocalContext.current
+    val bitmap = BitmapFactory.decodeResource(context.resources, R.drawable.test) // Replace with your drawable
+    ImageCropper(bitmap)
 }
